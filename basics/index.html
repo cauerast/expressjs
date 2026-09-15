@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Front-End</title>
+</head>
+<body>
+  <h1>Hello world</h1>
+  <button>Get Message</button>
+  <script>
+    const heading = document.querySelector('h1');
+    const button = document.querySelector('button');
+
+    button.addEventListener('click', () => {
+      fetch('https://localhost:3000/message')
+      .then((res) => {
+        if(!res.ok) throw Error(`Server error ${res.status}: ${res.statusText}`)
+        return res.json()
+      })
+      .then((data) => {
+        heading.textContent = data.message;
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    })
+  </script>
+</body>
+</html>

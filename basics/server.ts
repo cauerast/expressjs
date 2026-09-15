@@ -1,9 +1,17 @@
 import express, { type Request, type Response } from 'express';
+import productsRouter from './routes/products';
+import cors from 'cors';
+
+// middleware ----------------------------------------------------------------
 const app = express(); // app object (represents web server)
 
-app.listen(3000, () => {
-  console.log('server running')
-}); // define a port and log
+app.use(express.json()); // allow express parse json data and put the result into req.body
+app.use(cors({
+  origin: ['https://localhost:5500']
+})); // allow cross origins ports
+
+// routes -------------------------------------------------------------------
+app.use('/product', productsRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello from express')
@@ -13,26 +21,20 @@ app.get('/about', (req, res) => {
   res.send('About page')
 })
 
-app.get('/products', (req, res) => {
-  res.json([
-    { id: 1, name: 'Laptop',  price: 1299 },
-    { id: 2, name: 'Mouse',  price: 60 }
-  ])
+app.get('/message', (req, res) => {
+  res.json({ message: "Hello from back-end" })
 })
 
-type product = {
-  id: number,
-  name: string,
-  price: number
-}
-
-app.get('/products/:id', (req,res) => {
-  const id: number = Number(req.params.id);
-  const products: product[] = [
-    { id: 1, name: 'Laptop',  price: 1299 },
-    { id: 2, name: 'Mouse',  price: 60 }
-  ]
-  const find: product | undefined = products.find((p) => p.id === id)
-  res.json(find)
+app.post('/message', (req,res) => {
+  const { name, message } = req.body;
+  
+  console.log('new message: ', name, message);
+  res.json({ message: 'thanks for the message' })
 })
 
+
+
+
+app.listen(3000, () => {
+  console.log('server running')
+}); // define a port and log

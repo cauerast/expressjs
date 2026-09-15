@@ -20,13 +20,19 @@ app.get('/products', (req, res) => {
   ])
 })
 
+type product = {
+  id: number,
+  name: string,
+  price: number
+}
+
 app.get('/products/:id', (req,res) => {
   const id: number = Number(req.params.id);
-  const products = [
+  const products: product[] = [
     { id: 1, name: 'Laptop',  price: 1299 },
     { id: 2, name: 'Mouse',  price: 60 }
   ]
-
-  const reqProd = products.find((p) => p.id === id)
-  res.json(reqProd);
+  const find: product | undefined = products.find((p) => p.id === id)
+  res.json(find)
 })
+

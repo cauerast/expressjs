@@ -4,14 +4,14 @@ const router = express.Router();
 
 // /products/
 
-router.get("/", (req, res) => {
+router.get("/", (req: Request, res: Response) => {
   res.json([
     { id: 1, name: "Laptop", price: 1299 },
     { id: 2, name: "Mouse", price: 60 },
   ]);
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req: Request, res: Response) => {
   const id: number = Number(req.params.id);
   const products: product[] = [
     { id: 1, name: "Laptop", price: 1299 },

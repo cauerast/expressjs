@@ -12,9 +12,9 @@ app.use(cors({
 })); // allow cross origins ports
 
 app.use((req: Request, res: Response, next) => {
-  console.log(req.method, req.path); // (METHOD/ path)
-  next();
-}) // used to vizualize reqs on terminal (METHOD/ path)
+  console.log(req.method, req.path); // used to vizualize reqs on terminal (METHOD/ path)
+  next(); // .next() pass the control to the next middleware or route;
+})
 
 
 // routes -------------------------------------------------------------------

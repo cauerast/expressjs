@@ -3,7 +3,7 @@ import { prisma } from '../server/prisma';
 import bcrypt from 'bcrypt';
 import type { UserDto } from '../types/user.dto';
 
-const register = async (req: Request, res: Response) => {
+export async function register(req: Request, res: Response){
   const { name, email, password } = req.body;
 
   const userExists = await prisma.user.findUnique({
@@ -37,5 +37,3 @@ const register = async (req: Request, res: Response) => {
     },
   });
 };
-
-export { register };

@@ -1,39 +1,28 @@
-import { type Request, type Response } from 'express';
-import { prisma } from '../server/prisma';
 import bcrypt from 'bcrypt';
-import type { UserDto } from '../types/user.dto';
 
-export async function register(req: Request, res: Response) {
-  const { name, email, password } = req.body;
+import * as repository from '../repositories/user.repository';
 
-  const userExists = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
+import type { CreateUserDto } from '../dto/user/create.user.dto';
+import type { UserResponseDto } from '../dto/user/response.user.dto';
 
-  if (userExists) {
-    return res.status(400).json({ error: 'User already exists w/ this email' });
+export async function register( user: CreateUserDto ): Promise<UserResponseDto> {
+  const exists = await repository.findByEmail(user.email);
+
+  if (exists) {
+    throw new Error('Email already registered');
   }
 
-  const hash: string = await bcrypt.hash(password, 10);
+  const hash = await bcrypt.hash(user.password, 10);
 
-  const user: UserDto = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hash,
-    },
+  const newUser = await repository.create({
+    ...user,
+    password: hash,
   });
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      user: {
-        id: user.id,
-        name,
-        email,
-      },
-    },
-  });
+  return {
+    id: newUser.id,
+    name: newUser.name,
+    email: newUser.email,
+    createdAt: newUser.createdAt,
+  };
 }

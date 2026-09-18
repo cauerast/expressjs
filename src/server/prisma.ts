@@ -12,7 +12,7 @@ const prisma: PrismaClient = new PrismaClient({
 
 const connectDB = async () => {
   try {
-    await prisma.$connect;
+    await prisma.$connect();
     console.log('DB connected via Prisma');
   } catch (err) {
     console.error('Database connection error: ', err);
@@ -20,7 +20,7 @@ const connectDB = async () => {
   }
 };
 const disconnectDB = async () => {
-  await prisma.$disconnect;
+  await prisma.$disconnect();
 };
 
 export { prisma, connectDB, disconnectDB };

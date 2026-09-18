@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 import { connectDB, disconnectDB } from './server/prisma';
 import movie from './routes/movie';
 import auth from './routes/auth';
+import { connect } from 'http2';
 
 const app = express();
 const PORT = '3000';
@@ -19,6 +20,8 @@ app.use(express.json());
 // Application routes
 app.use('/movies', movie);
 app.use('/auth', auth);
+
+await connectDB();
 
 const server = app.listen(PORT, () => {
   console.log(`App running on port ${PORT}`);

@@ -4,7 +4,6 @@ import { config } from 'dotenv';
 import { connectDB, disconnectDB } from './server/prisma';
 import movie from './routes/movie';
 import auth from './routes/auth';
-import { connect } from 'http2';
 
 const app = express();
 const PORT = '3000';
